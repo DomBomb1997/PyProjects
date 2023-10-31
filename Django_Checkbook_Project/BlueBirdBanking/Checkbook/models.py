@@ -1,3 +1,26 @@
 from django.db import models
 
-# Create your models here.
+# Creates the Account Model
+class Account(models.Model):
+    first_name = models.ChaField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    Initlal_deposit = models.DecimalField(max_digits=15, decimal_places=2)
+
+    # Defines the model Manger for Accounts
+    Accounts = models.Manger()
+
+    # Allows references to a specific account be returned as the owner's name not the primary key
+    def __str__(self):
+        return self.first_name + ' ' = self.last_name
+
+
+# Choices for a transaction
+class Transaction(models.Model):
+    date = models.DateField()
+    type = models.CharField(max_length=10, choices=TransactionTypes)
+    amount = models.DecimalField(max_digits=15, decimal_places=2)
+    description = models.CharField(max_length=100)
+    account = models.ForeignKey(Account, on_delete=models.CASCAADE)
+
+    #Defines the model Manger for Transactions
+    Transactions = models.Manger()
