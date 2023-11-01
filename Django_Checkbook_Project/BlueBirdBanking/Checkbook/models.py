@@ -13,6 +13,9 @@ class Account(models.Model):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
+# Choices for a tansaction
+TransactionTypes = [('Deposit', 'Deposit'), ('Withdrawal', 'Withdrawal')]
+
 
 # Choices for a transaction
 class Transaction(models.Model):
