@@ -17,9 +17,9 @@ def create_account(request):
     form = AccountForm(data=request.POST or None) # Retrives the Account form
     # Checks if request method POST
     if request.method == 'POST':
-        if form.is_vaild():  # Check to see if the submitted form is vaild and if so, saves form
-            form.save() # Saves new account
-            return redirect('index') # Return user back to the home page
+        if form.is_valid():
+            form.save()
+            return redirect('index')
     # Pass content to the template in dictionary
     content = {'form' : form}
     # Adds content of form to page
@@ -29,9 +29,9 @@ def create_account(request):
 def balance(request, pk):
     account = get_object_or_404(Account, pk=pk) # Retrieve the requested account using its primary key
     transactions = Transaction.Transactions.filter(account=pk) # Retrieve all of that account's transactions
-    current_total = account.initial_deposit # Creates account total variable, starting with initial deposit value
+    current_total = account.Initlal_deposit # Creates account total variable, starting with initial deposit value
     table_contents = {} # Creates a dictionary into which transaction information will be placed
-    for t in tansactions: # Loop through transactions and determine which is a deposit or withdrawl
+    for t in transactions: # Loop through transactions and determine which is a deposit or withdrawl
         if t.type == 'Deposit' :
             current_total += t.amount # if deposit add amount to balance
             table_contents.update({t: current_total}) # Add transaction and total to the dictionary
@@ -47,11 +47,10 @@ def transaction(request):
     form = TransactionForm(data=request.POST or None) # Retrives the Tranaaction form
     # Checks if request method POST
     if request.method == 'POST':
-        if form.is_vaild():  # Check to see if the submitted form is vaild and if so, saves form
+        if form.is_valid():  # Check to see if the submitted form is vaild and if so, saves form
             pk = request.POST['account'] # Retrieve which account the transaction was for
             form.save() # Saves new account
             return balance(request, pk) # Renders balance of the accounts Balance
-            return redirect('index') # Return user back to the home page
     # Pass content to the template in dictionary
     content = {'form' : form}
     # Adds content of form to page
